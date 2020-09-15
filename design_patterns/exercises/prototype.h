@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 
 namespace prototype
 {
@@ -31,8 +32,7 @@ struct Line
         // TODO
         Point* nstart = new Point(start->x, start->y);
         Point* nend = new Point(end->x, end->y);
-        Line r = Line(nstart, nend);
-        return r;
+        return Line{nstart, nend};
     }
 };
 }
