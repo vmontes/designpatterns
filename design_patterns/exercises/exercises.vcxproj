@@ -152,6 +152,7 @@
     <ClCompile Include="singleton.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="command.h" />
     <ClInclude Include="composite.h" />
     <ClInclude Include="proxy.h" />
   </ItemGroup>

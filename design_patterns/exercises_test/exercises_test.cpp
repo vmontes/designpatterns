@@ -14,9 +14,12 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 #include "../exercises/prototype.h"
 #include "../exercises/factories.h"
 #include "../exercises/builder.h"
+#include "../exercises/command.h"
 #include "builder_test_helper.h"
 
 #define ASSERT_EQ(x,y) Assert::AreEqual(x,y)
+#define ASSERT_TRUE(x) Assert::IsTrue(x)
+#define ASSERT_FALSE(x) Assert::IsFalse(x)
 
 namespace exercisestest
 {
@@ -172,6 +175,44 @@ namespace exercisestest
 				auto printed = oss.str();
 				trim(printed);
 				ASSERT_EQ(0, printed.compare("class Person\n{\n  string name;\n  int age;\n};"));
+			}
+		}
+
+		TEST_METHOD(TestCommand)
+		{
+			using namespace command;
+			{
+				Account ac;
+				Command dep;
+				dep.action = Command::deposit;
+				dep.amount = 100;
+				Command wit;
+				wit.action = Command::withdraw;
+				wit.amount = 60;
+
+				ac.process(dep);
+				ac.process(wit);
+				ASSERT_EQ(40, ac.balance);
+			}
+			{
+				Account a;
+				Command command{ Command::deposit, 100 };
+				a.process(command);
+
+				ASSERT_EQ(100, a.balance);
+				ASSERT_TRUE(command.success);
+
+				command = Command{ Command::withdraw, 50 };
+				a.process(command);
+
+				ASSERT_EQ(50, a.balance);
+				ASSERT_TRUE(command.success);
+
+				command = Command{ Command::withdraw, 150 };
+				a.process(command);
+
+				ASSERT_EQ(50, a.balance);
+				ASSERT_FALSE(command.success);
 			}
 		}
 
