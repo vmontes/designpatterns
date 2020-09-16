@@ -1,2 +1,2 @@
 # Design Patterns
-Exercises from the class Design Patterns in Modern C++ (Dmitri Nesteruk)
+My solutions of the exercises from the class Design Patterns in Modern C++ (Dmitri Nesteruk)
