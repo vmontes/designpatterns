@@ -154,6 +154,7 @@
   <ItemGroup>
     <ClInclude Include="command.h" />
     <ClInclude Include="composite.h" />
+    <ClInclude Include="interpreter.h" />
     <ClInclude Include="proxy.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

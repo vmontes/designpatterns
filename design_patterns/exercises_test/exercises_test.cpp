@@ -15,6 +15,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 #include "../exercises/factories.h"
 #include "../exercises/builder.h"
 #include "../exercises/command.h"
+#include "../exercises/interpreter.h"
 #include "builder_test_helper.h"
 
 #define ASSERT_EQ(x,y) Assert::AreEqual(x,y)
@@ -213,6 +214,26 @@ namespace exercisestest
 
 				ASSERT_EQ(50, a.balance);
 				ASSERT_FALSE(command.success);
+			}
+		}
+
+		TEST_METHOD(TestInterpreter)
+		{
+			using namespace interpreter;
+			{
+				ExpressionProcessor ep;
+				int value = ep.calculate("1+2+3");
+				ASSERT_EQ(6, value);
+				ep.variables['x'] = 10;
+				ASSERT_EQ(14, ep.calculate("1+x+3"));
+			}
+			{
+				ExpressionProcessor ep;
+				ep.variables['x'] = 5;
+				ASSERT_EQ(1, ep.calculate("1"));
+				ASSERT_EQ(3, ep.calculate("1+2"));
+				ASSERT_EQ(6, ep.calculate("1+x"));
+				ASSERT_EQ(0, ep.calculate("1+xy"));
 			}
 		}
 
