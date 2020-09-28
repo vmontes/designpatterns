@@ -16,6 +16,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 #include "../exercises/builder.h"
 #include "../exercises/command.h"
 #include "../exercises/interpreter.h"
+#include "../exercises/iterator.h"
 #include "builder_test_helper.h"
 
 #define ASSERT_EQ(x,y) Assert::AreEqual(x,y)
@@ -235,6 +236,24 @@ namespace exercisestest
 				ASSERT_EQ(6, ep.calculate("1+x"));
 				ASSERT_EQ(0, ep.calculate("1+xy"));
 			}
+		}
+
+		TEST_METHOD(TestIterator)
+		{
+			using namespace iterator;
+			Node<char> c{ 'c' };
+			Node<char> d{ 'd' };
+			Node<char> e{ 'e' };
+			Node<char> b{ 'b', &c, &d };
+			Node<char> a{ 'a', &b, &e };
+
+			vector<Node<char>*> result;
+			a.preorder_traversal(result);
+
+			ostringstream oss;
+			for (auto n : result)
+				oss << n->value;
+			ASSERT_EQ(0, oss.str().compare("abcde"));
 		}
 
 	};
