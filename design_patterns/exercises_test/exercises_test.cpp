@@ -17,6 +17,8 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 #include "../exercises/command.h"
 #include "../exercises/interpreter.h"
 #include "../exercises/iterator.h"
+#include "../exercises/mediator.h"
+
 #include "builder_test_helper.h"
 
 #define ASSERT_EQ(x,y) Assert::AreEqual(x,y)
@@ -256,5 +258,24 @@ namespace exercisestest
 			ASSERT_EQ(0, oss.str().compare("abcde"));
 		}
 
+		TEST_METHOD(TestMediator)
+		{
+			using namespace mediator;
+			Mediator m;
+			Participant p1{ m }, p2{ m };
+
+			ASSERT_EQ(0, p1.value);
+			ASSERT_EQ(0, p2.value);
+
+			p1.say(2);
+
+			ASSERT_EQ(0, p1.value);
+			ASSERT_EQ(2, p2.value);
+
+			p2.say(4);
+
+			ASSERT_EQ(4, p1.value);
+			ASSERT_EQ(2, p2.value);
+		}
 	};
 }
