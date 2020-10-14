@@ -18,6 +18,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 #include "../exercises/interpreter.h"
 #include "../exercises/iterator.h"
 #include "../exercises/mediator.h"
+#include "../exercises/memento.h"
 
 #include "builder_test_helper.h"
 
@@ -276,6 +277,42 @@ namespace exercisestest
 
 			ASSERT_EQ(4, p1.value);
 			ASSERT_EQ(2, p2.value);
+		}
+
+		TEST_METHOD(TestMemento)
+		{
+			using namespace memento;
+			{
+				TokenMachine tm;
+				auto m = tm.add_token(123);
+				tm.add_token(456);
+				tm.revert(m);
+				ASSERT_EQ(1, (int)tm.tokens.size());
+				ASSERT_EQ(123, tm.tokens[0]->value);
+			}
+			{
+				TokenMachine tm;
+				tm.add_token(1);
+				auto m = tm.add_token(2);
+				tm.add_token(3);
+				tm.revert(m);
+				ASSERT_EQ(2, (int)tm.tokens.size());
+				ASSERT_EQ(1, tm.tokens[0]->value);
+				ASSERT_EQ(2, tm.tokens[1]->value);
+			}
+			{
+				TokenMachine tm;
+				cout << "Made a token with value=111 and kept a reference\n";
+				auto token = make_shared<Token>(111);
+				cout << "Added this token to the list\n";
+				tm.add_token(token);
+				auto m = tm.add_token(222);
+				cout << "Changed this token's value to 333 :)\n";
+				token->value = 333;
+				tm.revert(m);
+				ASSERT_EQ(2, (int)tm.tokens.size());
+				ASSERT_EQ(111, tm.tokens[0]->value);
+			}	
 		}
 	};
 }
