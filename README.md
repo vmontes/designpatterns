@@ -14,6 +14,7 @@ My solutions for the exercises from the class Design Patterns in Modern C++ (Dmi
 * iterator
 * mediator
 * memento
+* observer
 * prototype
 * proxy
 * singleton

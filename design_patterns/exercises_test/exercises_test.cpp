@@ -19,6 +19,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 #include "../exercises/iterator.h"
 #include "../exercises/mediator.h"
 #include "../exercises/memento.h"
+#include "../exercises/observer.h"
 
 #include "builder_test_helper.h"
 
@@ -313,6 +314,40 @@ namespace exercisestest
 				ASSERT_EQ(2, (int)tm.tokens.size());
 				ASSERT_EQ(111, tm.tokens[0]->value);
 			}	
+		}
+
+		TEST_METHOD(TestObserver)
+		{
+			using namespace observer;			
+			{
+				Game game;
+				Rat rat{ game };
+				ASSERT_EQ(1, rat.GetAttack());
+			}
+			{
+				Game game;
+				Rat rat{ game };
+				Rat rat2{ game };
+				ASSERT_EQ(2, rat.GetAttack());
+				ASSERT_EQ(2, rat2.GetAttack());
+			}
+			{
+				Game game;
+				Rat rat{ game };
+				ASSERT_EQ(1, rat.GetAttack());
+
+				Rat rat2{ game };
+				ASSERT_EQ(2, rat.GetAttack());
+				ASSERT_EQ(2, rat2.GetAttack());
+
+				{
+					Rat rat3{ game };
+
+					ASSERT_EQ(3, rat.GetAttack());
+					ASSERT_EQ(3, rat2.GetAttack());
+					ASSERT_EQ(3, rat3.GetAttack());
+				}
+			}
 		}
 	};
 }
