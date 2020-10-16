@@ -5,7 +5,6 @@ using namespace std;
 
 namespace observer
 {
-class Game;
 class IRat
 {
     int attack{ 1 };
