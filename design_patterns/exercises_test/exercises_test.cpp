@@ -20,6 +20,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 #include "../exercises/mediator.h"
 #include "../exercises/memento.h"
 #include "../exercises/observer.h"
+#include "../exercises/state.h"
 
 #include "builder_test_helper.h"
 
@@ -347,6 +348,38 @@ namespace exercisestest
 					ASSERT_EQ(3, rat2.GetAttack());
 					ASSERT_EQ(3, rat3.GetAttack());
 				}
+			}
+		}
+
+		TEST_METHOD(TestState)
+		{
+			using namespace state;
+			{
+				CombinationLock cl({ 1,2,3 });
+				ASSERT_EQ(0, cl.status.compare("LOCKED"));
+
+				cl.enter_digit(1);
+				ASSERT_EQ(0, cl.status.compare("1"));
+
+				cl.enter_digit(2);
+				ASSERT_EQ(0, cl.status.compare("12"));
+
+				cl.enter_digit(3);
+				ASSERT_EQ(0, cl.status.compare("OPEN"));
+			}
+
+			{
+				CombinationLock cl({ 1,2,3 });
+				ASSERT_EQ(0, cl.status.compare("LOCKED"));
+
+				cl.enter_digit(1);
+				ASSERT_EQ(0, cl.status.compare("1"));
+
+				cl.enter_digit(2);
+				ASSERT_EQ(0, cl.status.compare("12"));
+
+				cl.enter_digit(5);
+				ASSERT_EQ(0, cl.status.compare("ERROR"));
 			}
 		}
 	};
