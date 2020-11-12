@@ -71,5 +71,8 @@
     <ClInclude Include="state.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="strategy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

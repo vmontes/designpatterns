@@ -21,6 +21,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 #include "../exercises/memento.h"
 #include "../exercises/observer.h"
 #include "../exercises/state.h"
+#include "../exercises/strategy.h"
 
 #include "builder_test_helper.h"
 
@@ -380,6 +381,55 @@ namespace exercisestest
 
 				cl.enter_digit(5);
 				ASSERT_EQ(0, cl.status.compare("ERROR"));
+			}
+		}
+
+		bool compare_complex(complex<double> tmpl, complex<double> tmpr)
+		{
+			auto templ = tmpl;
+			auto tempr = tmpr;
+			return (tmpl == tmpr);
+		}
+		TEST_METHOD(TestStrategy)
+		{
+			using namespace strategy;
+			{
+				{
+					OrdinaryDiscriminantStrategy strategy;
+					QuadraticEquationSolver solver{ strategy };
+					auto results = solver.solve(1, 10, 16);
+					
+					ASSERT_EQ(true, compare_complex(complex<double>(-2, 0), get<0>(results)));
+					ASSERT_EQ(true, compare_complex(complex<double>(-8, 0), get<1>(results)));
+				}
+
+				{
+					RealDiscriminantStrategy strategy;
+					QuadraticEquationSolver solver{ strategy };
+					auto results = solver.solve(1, 10, 16);
+					ASSERT_EQ(true, compare_complex(complex<double>(-2, 0), get<0>(results)));
+					ASSERT_EQ(true, compare_complex(complex<double>(-8, 0), get<1>(results)));
+				}
+
+				{
+					OrdinaryDiscriminantStrategy strategy;
+					QuadraticEquationSolver solver{ strategy };
+					auto results = solver.solve(1, 4, 5);
+					ASSERT_EQ(true, compare_complex(complex<double>(-2, 1), get<0>(results)));
+					ASSERT_EQ(true, compare_complex(complex<double>(-2, -1), get<1>(results)));
+				}
+
+				{
+					RealDiscriminantStrategy strategy;
+					QuadraticEquationSolver solver{ strategy };
+					auto results = solver.solve(1, 4, 5);
+					auto x1 = get<0>(results);
+					auto x2 = get<1>(results);
+					ASSERT_TRUE(isnan(x1.real()));
+					ASSERT_TRUE(isnan(x2.real()));
+					ASSERT_TRUE(isnan(x1.imag()));
+					ASSERT_TRUE(isnan(x2.imag()));
+				}
 			}
 		}
 	};
