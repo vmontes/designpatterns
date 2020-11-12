@@ -22,6 +22,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 #include "../exercises/observer.h"
 #include "../exercises/state.h"
 #include "../exercises/strategy.h"
+#include "../exercises/template_method.h"
 
 #include "builder_test_helper.h"
 
@@ -429,6 +430,42 @@ namespace exercisestest
 					ASSERT_TRUE(isnan(x2.real()));
 					ASSERT_TRUE(isnan(x1.imag()));
 					ASSERT_TRUE(isnan(x2.imag()));
+				}
+			}
+		}
+
+		TEST_METHOD(TestTemplateMethod)
+		{
+			using namespace template_method;
+			{
+				{
+					Creature c1{ 1,2 };
+					Creature c2{ 1,2 };
+					TemporaryCardDamageGame game({ c1,c2 });
+					ASSERT_EQ(-1, game.combat(0, 1));
+					ASSERT_EQ(-1, game.combat(0, 1));
+				}
+
+				{
+					Creature c1{ 1,1 };
+					Creature c2{ 2,2 };
+					TemporaryCardDamageGame game({ c1,c2 });
+					ASSERT_EQ(1, game.combat(0, 1));
+				}
+
+				{
+					Creature c1{ 2,2 };
+					Creature c2{ 2,2 };
+					TemporaryCardDamageGame game({ c1,c2 });
+					ASSERT_EQ(-1, game.combat(0, 1));
+				}
+
+				{
+					Creature c1{ 1,2 };
+					Creature c2{ 1,3 };
+					PermanentCardDamageGame game({ c1, c2 });
+					ASSERT_EQ(-1, game.combat(0, 1));
+					ASSERT_EQ(1, game.combat(0, 1));
 				}
 			}
 		}

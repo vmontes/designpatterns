@@ -162,6 +162,7 @@
     <ClInclude Include="proxy.h" />
     <ClInclude Include="state.h" />
     <ClInclude Include="strategy.h" />
+    <ClInclude Include="template_method.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
