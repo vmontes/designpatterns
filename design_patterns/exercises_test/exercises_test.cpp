@@ -23,6 +23,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 #include "../exercises/state.h"
 #include "../exercises/strategy.h"
 #include "../exercises/template_method.h"
+#include "../exercises/visitor.h"
 
 #include "builder_test_helper.h"
 
@@ -466,6 +467,40 @@ namespace exercisestest
 					PermanentCardDamageGame game({ c1, c2 });
 					ASSERT_EQ(-1, game.combat(0, 1));
 					ASSERT_EQ(1, game.combat(0, 1));
+				}
+			}
+		}
+
+		TEST_METHOD(TestVisitor)
+		{
+			using namespace visitor;
+			{
+				{
+					const Value v2{ 2 };
+					const Value v3{ 3 };
+					const AdditionExpression simple{ v2,v3 };
+					ExpressionPrinter ep;
+					ep.accept(simple);
+					ASSERT_EQ(0, ep.str().compare("(2+3)"));
+				}
+
+				{
+					Value v{ 2 };
+					AdditionExpression simple{ v,v };
+					ExpressionPrinter ep;
+					ep.accept(simple);
+					ASSERT_EQ(0, ep.str().compare("(2+2)"));
+				}
+
+				{
+					Value _2{ 2 };
+					Value _3{ 3 };
+					Value _4{ 4 };
+					AdditionExpression ae{ _2, _3 };
+					MultiplicationExpression expr{ ae, _4 };
+					ExpressionPrinter ep;
+					ep.accept(expr);
+					ASSERT_EQ(0, ep.str().compare("(2+3)*4"));
 				}
 			}
 		}
