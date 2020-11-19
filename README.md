@@ -18,3 +18,7 @@ My solutions for the exercises from the class Design Patterns in Modern C++ (Dmi
 * prototype
 * proxy
 * singleton
+* state
+* strategy
+* template method
+* visitor
